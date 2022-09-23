@@ -230,7 +230,6 @@ export const PaletteTree = () => (
                 </Variant>
             </Component>
         </Category>
-
         <Category name="Buttons">
             <Component name="ActionIcon" docURL="https://mantine.dev/core/action-icon/">
                 <Variant>
@@ -326,7 +325,6 @@ export const PaletteTree = () => (
                 </Variant>
             </Component>
         </Category>
-
         <Category name="Inputs">
             <Component name="Autocomplete" docURL="https://mantine.dev/core/autocomplete/">
                 <Variant>
@@ -1166,7 +1164,6 @@ export const PaletteTree = () => (
                 </Variant>
             </Component>
         </Category>
-
         <Category name="Navigation">
             <Component name="Anchor" docURL="https://mantine.dev/core/anchor/">
                 <Variant>
