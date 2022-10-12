@@ -99,7 +99,7 @@ import {useForm} from "@mantine/form";
 export const PaletteTree = () => (
     <Palette>
         <Category name="Layout">
-            <Component name="AspectRatio" docURL="https://mantine.dev/core/app-shell/">
+            <Component name="AspectRatio" docURL="https://mantine.dev/core/aspect-ratio/">
                 <Variant>
                     <AspectRatio ratio={720 / 1080} sx={{ maxWidth: 300 }} mx="auto">
                         <Image alt="Panda" style={{backgroundColor: 'red'}} />
@@ -154,7 +154,7 @@ export const PaletteTree = () => (
                     </Grid>
                 </Variant>
                 <Variant name="with gutter">
-                    <Grid gutter="sm">
+                    <Grid gutter="sm" style={{width: '100%'}}>
                         <Grid.Col span={4}>
                             <div style={{width: '100%', height: '100px', backgroundColor: 'red'}}/>
                         </Grid.Col>
@@ -164,6 +164,13 @@ export const PaletteTree = () => (
                         <Grid.Col span={4}>
                             <div style={{width: '100%', height: '100px', backgroundColor: 'red'}}/>
                         </Grid.Col>
+                        <CopyButton value="https://mantine.dev">
+                            {({copied, copy}) => (
+                                <Button color={copied ? 'teal' : 'blue'} onClick={copy}>
+                                    {copied ? 'Copied url' : 'Copy url'}
+                                </Button>
+                            )}
+                        </CopyButton>
                     </Grid>
                 </Variant>
             </Component>
@@ -276,9 +283,6 @@ export const PaletteTree = () => (
             <Component name="Button" docURL="https://mantine.dev/core/button/">
                 <Variant>
                     <Button>Button</Button>
-                </Variant>
-                <Variant name="filled">
-                    <Button variant="filled">Button</Button>
                 </Variant>
                 <Variant name="light">
                     <Button variant="light">Button</Button>
@@ -412,6 +416,7 @@ export const PaletteTree = () => (
                     <Checkbox
                         label="Your label"
                         color="gray"
+                        checked
                     />
                 </Variant>
             </Component>
@@ -423,7 +428,7 @@ export const PaletteTree = () => (
                     <Chip variant="filled">Your label</Chip>
                 </Variant>
                 <Variant name="with color">
-                    <Chip color="red">Your label</Chip>
+                    <Chip color="red" checked>Your label</Chip>
                 </Variant>
             </Component>
             <Component name="ColorInput" docURL="https://mantine.dev/core/color-input/">
@@ -1283,11 +1288,7 @@ export const PaletteTree = () => (
                         <Tabs.List>
                             <Tabs.Tab value="value1">Tab1</Tabs.Tab>
                             <Tabs.Tab value="value2">Tab2</Tabs.Tab>
-                            <Tabs.Tab value="value3">
-                                <BackgroundImage src="">
-                                    Contend
-                                </BackgroundImage>
-                                Tab3</Tabs.Tab>
+                            <Tabs.Tab value="value3">Tab3</Tabs.Tab>
                         </Tabs.List>
 
                         <Tabs.Panel value="value1" pt="xs">
@@ -1305,7 +1306,7 @@ export const PaletteTree = () => (
                 </Variant>
             </Component>
         </Category>
-        <Category name="Data display">
+        <Category name="Data Display">
             <Component name="Accordion" docURL="https://mantine.dev/core/accordion/">
                 <Variant>
                     <Accordion defaultValue="value1">
@@ -1889,13 +1890,13 @@ export const PaletteTree = () => (
             </Component>
             <Component name="Progress" docURL="https://mantine.dev/core/progress/">
                 <Variant>
-                    <Progress value={50} />
+                    <Progress value={50} style={{width: "100%"}} />
                 </Variant>
                 <Variant name="striped">
-                    <Progress value={50} striped />
+                    <Progress value={50} striped style={{width: "100%"}} />
                 </Variant>
                 <Variant name="animate">
-                    <Progress value={50} animate />
+                    <Progress value={50} animate style={{width: "100%"}} />
                 </Variant>
                 <Variant name="sections">
                     <Progress
@@ -1904,6 +1905,8 @@ export const PaletteTree = () => (
                             { value: 25, color: 'grape', label: 'Label2', tooltip: 'Tooltip2' },
                             { value: 25, color: 'violet', label: 'Label3', tooltip: 'Tooltip3' },
                         ]}
+                        size={24}
+                        style={{width: "100%"}}
                     />
                 </Variant>
             </Component>
@@ -1956,22 +1959,22 @@ export const PaletteTree = () => (
             </Component>
             <Component name="Divider" docURL="https://mantine.dev/core/divider/">
                 <Variant>
-                    <Divider my="sm" />
+                    <Divider my="sm" style={{width: '100%'}} />
                 </Variant>
                 <Variant name="dashed">
-                    <Divider my="sm" variant="dashed" />
+                    <Divider my="sm" variant="dashed" style={{width: '100%'}} />
                 </Variant>
                 <Variant name="dotted">
-                    <Divider my="sm" variant="dotted" />
+                    <Divider my="sm" variant="dotted" style={{width: '100%'}} />
                 </Variant>
                 <Variant name="label left">
-                    <Divider my="xs" label="Label on the left" />
+                    <Divider my="xs" label="Label on the left" style={{width: '100%'}} />
                 </Variant>
                 <Variant name="label center">
-                    <Divider my="xs" label="Label in the center" labelPosition="center" />
+                    <Divider my="xs" label="Label in the center" labelPosition="center" style={{width: '100%'}} />
                 </Variant>
                 <Variant name="label right">
-                    <Divider my="xs" label="Label on the right" labelPosition="right" />
+                    <Divider my="xs" label="Label on the right" labelPosition="right" style={{width: '100%'}} />
                 </Variant>
                 <Variant name="vertical">
                     <Divider orientation="vertical" />
@@ -2097,12 +2100,6 @@ function FormExampleProto() {
             <Button type="reset">Reset</Button>
         </form>
     )
-}
-
-function HueSliderProto() {
-    const [value, onChange] = useState(250);
-
-    return <HueSlider value={value} onChange={onChange} />;
 }
 
 function BurgerProto() {
@@ -2273,6 +2270,7 @@ function ModalProto() {
         </>
     );
 }
+
 function ModalCenteredProto() {
     const [opened, setOpened] = useState(false);
 
