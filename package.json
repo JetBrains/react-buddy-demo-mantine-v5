@@ -8,10 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.4",
-    "@mantine/core": "^5.3.0",
-    "@mantine/form": "^5.4.0",
-    "@react-buddy/ide-toolbox": "^2.2.0",
+    "@emotion/react": "^11.10.5",
+    "@mantine/core": "^5.7.2",
+    "@mantine/form": "^5.7.2",
+    "@react-buddy/ide-toolbox": "^2.3.0-dev.3",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },

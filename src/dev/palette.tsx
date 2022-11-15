@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
     Category,
     Component,
@@ -92,7 +92,12 @@ import {
     Divider,
     Paper,
     ScrollArea,
-    Transition
+    Transition,
+    TypographyStylesProvider,
+    FocusTrap,
+    TransferList,
+    TransferListData,
+    Rating,
 } from "@mantine/core";
 import {useForm} from "@mantine/form";
 
@@ -100,17 +105,10 @@ export const PaletteTree = () => (
     <Palette>
         <Category name="Layout">
             <Component name="AspectRatio" docURL="https://mantine.dev/core/aspect-ratio/">
-                <Variant>
-                    <AspectRatio ratio={720 / 1080} sx={{ maxWidth: 300 }} mx="auto">
+                <Variant previewLayout="stretch">
+                    <AspectRatio ratio={3 / 2} sx={{ maxWidth: 100 }} mx="auto">
                         <Image alt="Panda" style={{backgroundColor: 'red'}} />
                     </AspectRatio>
-                </Variant>
-            </Component>
-            <Component name="Container" docURL="https://mantine.dev/core/container/">
-                <Variant>
-                    <Container>
-                        Content
-                    </Container>
                 </Variant>
             </Component>
             <Component name="Center" docURL="https://mantine.dev/core/center/">
@@ -118,6 +116,13 @@ export const PaletteTree = () => (
                     <Center style={{width: 400, height: 200}}>
                         <div>All elements inside Center are centered</div>
                     </Center>
+                </Variant>
+            </Component>
+            <Component name="Container" docURL="https://mantine.dev/core/container/">
+                <Variant>
+                    <Container>
+                        Content
+                    </Container>
                 </Variant>
             </Component>
             <Component name="Grid" docURL="https://mantine.dev/core/grid/">
@@ -244,11 +249,6 @@ export const PaletteTree = () => (
                         <CheckIcon />
                     </ActionIcon>
                 </Variant>
-                <Variant name="transparent">
-                    <ActionIcon variant="transparent">
-                        <CheckIcon />
-                    </ActionIcon>
-                </Variant>
                 <Variant name="filled">
                     <ActionIcon variant="filled">
                         <CheckIcon />
@@ -266,6 +266,11 @@ export const PaletteTree = () => (
                 </Variant>
                 <Variant name="default">
                     <ActionIcon variant="default">
+                        <CheckIcon />
+                    </ActionIcon>
+                </Variant>
+                <Variant name="transparent">
+                    <ActionIcon variant="transparent">
                         <CheckIcon />
                     </ActionIcon>
                 </Variant>
@@ -364,19 +369,19 @@ export const PaletteTree = () => (
                     <Autocomplete
                         label="Your label"
                         // Your custom item component with data properties
-                        itemComponent={({ value, color }) => <div>{value}</div>}
+                        itemComponent={({ value, label }) => <div>{label}</div>}
                         data={[
                             {
                                 value: 'value1',
-                                color: 'red',
+                                label: 'Label1',
                             },
                             {
                                 value: 'value2',
-                                color: 'green',
+                                label: 'Label2',
                             },
                             {
                                 value: 'value3',
-                                color: 'blue',
+                                label: 'Label2',
                             },
                         ]}
                     />
@@ -415,7 +420,7 @@ export const PaletteTree = () => (
                 <Variant name="with color">
                     <Checkbox
                         label="Your label"
-                        color="gray"
+                        color="red"
                         checked
                     />
                 </Variant>
@@ -463,7 +468,7 @@ export const PaletteTree = () => (
                         format="hsla"
                     />
                 </Variant>
-                <Variant name="switches">
+                <Variant name="swatches">
                     <ColorInput
                         label="Your label"
                         format="hex"
@@ -542,14 +547,23 @@ export const PaletteTree = () => (
                         swatches={['#ff0000', '#00ff00', '#0000ff']}
                     />
                 </Variant>
-                <Variant name="HueSlider">
-                    <HueSlider value={0} onChange={() => {/* Your code */}} />
+                <Variant name="HueSlider" previewLayout="stretch">
+                    <HueSlider
+                        value={0}
+                        onChange={() => {/* Your code */}}
+                        onChangeEnd={() => {/* Your code */}}
+                    />
                 </Variant>
-                <Variant name="AlphaSlider">
-                    <AlphaSlider value={0} onChange={() => {/* Your code */}} color="#1c7ed6" />
+                <Variant name="AlphaSlider" previewLayout="stretch">
+                    <AlphaSlider
+                        value={0}
+                        color="#1c7ed6"
+                        onChange={() => {/* Your code */}}
+                        onChangeEnd={() => {/* Your code */}}
+                    />
                 </Variant>
             </Component>
-            <Component name="FileInput">
+            <Component name="FileInput" docURL="https://mantine.dev/core/file-input/">
                 <Variant>
                     <FileInput
                         label="Your label"
@@ -582,7 +596,7 @@ export const PaletteTree = () => (
                         disabled
                     />
                 </Variant>
-                <Variant name="with label">
+                <Variant name="with icon">
                     <FileInput
                         label="Your label"
                         icon={<CheckIcon />}
@@ -633,7 +647,7 @@ export const PaletteTree = () => (
                     />
                 </Variant>
             </Component>
-            <Component name="Input.Wrapper" docURL="https://mantine.dev/core/input/">
+            <Component name="Input.Wrapper" docURL="https://mantine.dev/core/input/#inputwrapper">
                 <Variant>
                     <Input.Wrapper
                         label="Your label"
@@ -836,7 +850,31 @@ export const PaletteTree = () => (
                     />
                 </Variant>
             </Component>
-            <Component name="Radio.Group" docURL="https://mantine.dev/core/radio/">
+            <Component name="Radio" docURL="https://mantine.dev/core/radio">
+                <Variant>
+                    <Radio
+                        value="value"
+                        label="Your label"
+                        defaultChecked
+                    />
+                </Variant>
+                <Variant name="with color">
+                    <Radio
+                        value="value"
+                        label="Your label"
+                        color="red"
+                        defaultChecked
+                    />
+                </Variant>
+                <Variant name="with error">
+                    <Radio
+                        value="value"
+                        label="Your label"
+                        error="Error message"
+                    />
+                </Variant>
+            </Component>
+            <Component name="Radio.Group" docURL="https://mantine.dev/core/radio/#radiogroup-component">
                 <Variant>
                     <Radio.Group
                         label="Your label"
@@ -868,8 +906,25 @@ export const PaletteTree = () => (
                     </Radio.Group>
                 </Variant>
             </Component>
-            <Component name="RangeSlider" docURL="https://mantine.dev/core/slider/">
+            <Component name="Rating" docURL="https://mantine.dev/core/rating/">
                 <Variant>
+                    <Rating />
+                </Variant>
+                <Variant name="with color">
+                    <Rating color="red" />
+                </Variant>
+                <Variant name="count">
+                    <Rating count={3} />
+                </Variant>
+                <Variant name="highlightSelectedOnly">
+                    <Rating highlightSelectedOnly />
+                </Variant>
+                <Variant name="readOnly">
+                    <Rating value={3.5} fractions={2} readOnly />
+                </Variant>
+            </Component>
+            <Component name="RangeSlider" docURL="https://mantine.dev/core/slider/">
+                <Variant previewLayout="stretch">
                     <RangeSlider
                         marks={[
                             { value: 20, label: '20%' },
@@ -878,7 +933,7 @@ export const PaletteTree = () => (
                         ]}
                     />
                 </Variant>
-                <Variant name="color">
+                <Variant name="color" previewLayout="stretch">
                     <RangeSlider
                         color="red"
                         marks={[
@@ -888,7 +943,7 @@ export const PaletteTree = () => (
                         ]}
                     />
                 </Variant>
-                <Variant name="disabled">
+                <Variant name="disabled" previewLayout="stretch">
                     <RangeSlider
                         disabled
                         marks={[
@@ -898,7 +953,7 @@ export const PaletteTree = () => (
                         ]}
                     />
                 </Variant>
-                <Variant name="labelAlwaysOn">
+                <Variant name="labelAlwaysOn" previewLayout="stretch">
                     <RangeSlider
                         labelAlwaysOn
                         marks={[
@@ -974,7 +1029,9 @@ export const PaletteTree = () => (
                 </Variant>
                 <Variant name="itemComponent">
                     <Select
-                        itemComponent={({ value, label, image, name }) => {/* Your custom item component with data properties */ return null}}
+                        itemComponent={({ value, label, image, name }) => (
+                            <div>{label}</div>
+                        )}
                         data={[
                             {
                                 value: 'value1',
@@ -984,7 +1041,7 @@ export const PaletteTree = () => (
                             },
                             {
                                 value: 'value2',
-                                label: 'value2',
+                                label: 'Value2',
                                 image: 'image2',
                                 name: 'name2',
                             },
@@ -1078,6 +1135,7 @@ export const PaletteTree = () => (
                 </Variant>
                 <Variant name="color">
                     <Switch
+                        defaultChecked
                         label="I agree to sell my privacy"
                         color="red"
                     />
@@ -1168,6 +1226,9 @@ export const PaletteTree = () => (
                     />
                 </Variant>
             </Component>
+            <Component name="TransferList" docURL="https://mantine.dev/core/transfer-list/">
+                <Variant proto={TransferListProto} />
+            </Component>
         </Category>
         <Category name="Navigation">
             <Component name="Anchor" docURL="https://mantine.dev/core/anchor/">
@@ -1203,25 +1264,28 @@ export const PaletteTree = () => (
             <Component name="Burger" docURL="https://mantine.dev/core/burger/">
                 <Variant proto={BurgerProto} />
                 <Variant name="color">
-                    <Burger opened color="red" />
+                    <Burger opened={false} color="red" />
                 </Variant>
             </Component>
             <Component name="NavLink" docURL="https://mantine.dev/core/nav-link/">
                 <Variant>
                     <NavLink
                         label="Your label"
-                        icon={<CheckIcon />}
+                        active
+                        icon={<CheckIcon width={15} />}
                     />
                 </Variant>
                 <Variant name="filled">
                     <NavLink
                         label="Your label"
+                        active
                         variant="filled"
                     />
                 </Variant>
                 <Variant name="subtle">
                     <NavLink
                         label="Your label"
+                        active
                         variant="subtle"
                     />
                 </Variant>
@@ -1363,13 +1427,13 @@ export const PaletteTree = () => (
             </Component>
             <Component name="Avatar" docURL="https://mantine.dev/core/avatar/">
                 <Variant>
-                    <Avatar src="" alt="" />
+                    <Avatar src="" alt="Avatar" />
                 </Variant>
             </Component>
             <Component name="BackgroundImage" docURL="https://mantine.dev/core/background-image/">
                 <Variant>
-                    <BackgroundImage src="">
-                        Contend
+                    <BackgroundImage src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80">
+                        <Text color="#fff">Contend</Text>
                     </BackgroundImage>
                 </Variant>
             </Component>
@@ -1393,11 +1457,17 @@ export const PaletteTree = () => (
             <Component name="Card" docURL="https://mantine.dev/core/card/">
                 <Variant>
                     <Card withBorder>
-                        {/* Card.Section is a component that is used to remove Card padding */}
                         <Card.Section>
-                            Card Section
+                            <Image
+                                src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                                height={80}
+                                alt="Norway"
+                            />
                         </Card.Section>
-                        Content
+                        <Card.Section>
+                            Content without padding
+                        </Card.Section>
+                        Content with padding
                     </Card>
                 </Variant>
             </Component>
@@ -1408,7 +1478,12 @@ export const PaletteTree = () => (
             </Component>
             <Component name="Image" docURL="https://mantine.dev/core/image/">
                 <Variant requiredParams={['src']}>
-                    <Image alt="Your alt" />
+                    <Image
+                        width={200}
+                        height={80}
+                        src="https://images.unsplash.com/photo-1511216335778-7cb8f49fa7a3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                        alt="Your alt"
+                    />
                 </Variant>
             </Component>
             <Component name="Indicator" docURL="https://mantine.dev/core/indicator/">
@@ -1463,11 +1538,11 @@ export const PaletteTree = () => (
             <Component name="Timeline" docURL="https://mantine.dev/core/timeline/">
                 <Variant>
                     <Timeline active={1} bulletSize={24} lineWidth={2}>
-                        <Timeline.Item bullet={<CheckIcon />} title="Point1">
+                        <Timeline.Item title="Point1" bullet={<CheckIcon />}>
                             Text
                         </Timeline.Item>
 
-                        <Timeline.Item bullet={<CheckIcon />} title="Point2">
+                        <Timeline.Item title="Point2" bullet={<CheckIcon />}>
                             Text
                         </Timeline.Item>
 
@@ -1530,7 +1605,7 @@ export const PaletteTree = () => (
                         <Menu.Dropdown>
                             <Menu.Label>Label</Menu.Label>
                             <Menu.Item>Item</Menu.Item>
-                            <Menu.Item icon={<CheckIcon />}>Item</Menu.Item>
+                            <Menu.Item icon={<CheckIcon width={15} />}>Item</Menu.Item>
                             <Menu.Item rightSection={<Text size="xs" color="dimmed">⌘K</Text>}>
                                 Item
                             </Menu.Item>
@@ -1555,7 +1630,6 @@ export const PaletteTree = () => (
                             width: 200,
                             height: 100,
                             position: 'relative',
-                            backgroundColor: 'red'
                         }}
                     >
                         <Overlay opacity={0.6} color="#000" zIndex={5}/>
@@ -1828,6 +1902,13 @@ export const PaletteTree = () => (
                     >Support all text props</Title>
                 </Variant>
             </Component>
+            <Component name="TypographyStylesProvider">
+                <Variant>
+                    <TypographyStylesProvider>
+                        <div dangerouslySetInnerHTML={{ __html: '<p>Your html here</p>' }} />
+                    </TypographyStylesProvider>
+                </Variant>
+            </Component>
         </Category>
         <Category name="Feedback">
             <Component name="Alert" docURL="https://mantine.dev/core/alert/">
@@ -1980,6 +2061,9 @@ export const PaletteTree = () => (
                     <Divider orientation="vertical" />
                 </Variant>
             </Component>
+            <Component name="FocusTrap" docURL="https://mantine.dev/core/focus-trap/">
+                <Variant proto={FocusTrapProto} />
+            </Component>
             <Component name="Paper" docURL="https://mantine.dev/core/paper/">
                 <Variant>
                     <Paper shadow="xs" p="md">
@@ -2100,6 +2184,38 @@ function FormExampleProto() {
             <Button type="reset">Reset</Button>
         </form>
     )
+}
+
+function TransferListProto() {
+    const [data, setData] = useState<TransferListData>([
+        [
+            { value: 'react', label: 'React' },
+            { value: 'ng', label: 'Angular' },
+            { value: 'next', label: 'Next.js' },
+            { value: 'blitz', label: 'Blitz.js' },
+            { value: 'gatsby', label: 'Gatsby.js' },
+            { value: 'vue', label: 'Vue' },
+            { value: 'jq', label: 'jQuery' },
+        ],
+        [
+            { value: 'sv', label: 'Svelte' },
+            { value: 'rw', label: 'Redwood' },
+            { value: 'np', label: 'NumPy' },
+            { value: 'dj', label: 'Django' },
+            { value: 'fl', label: 'Flask' },
+        ],
+    ]);
+
+    return (
+        <TransferList
+            value={data}
+            onChange={setData}
+            searchPlaceholder="Search..."
+            nothingFound="Nothing here"
+            titles={['Frameworks', 'Libraries']}
+            breakpoint="sm"
+        />
+    );
 }
 
 function BurgerProto() {
@@ -2247,6 +2363,25 @@ function StepperProto() {
                 <Button variant="default" onClick={prevStep}>Back</Button>
                 <Button onClick={nextStep}>Next step</Button>
             </Group>
+        </>
+    );
+}
+
+function FocusTrapProto() {
+    const [active, setActive] = useState(false);
+    const toggleActive = useCallback(() => setActive(!active), [setActive]);
+
+    return (
+        <>
+            <Button onClick={toggleActive}>{active ? 'Deactivate' : 'Activate'} focus trap</Button>
+
+            <FocusTrap active={active}>
+                <div>
+                    <TextInput mt="sm" label="First input" placeholder="First input" />
+                    <TextInput mt="sm" label="Second input" placeholder="Second input" />
+                    <TextInput mt="sm" label="Third input" placeholder="Third input" />
+                </div>
+            </FocusTrap>
         </>
     );
 }
