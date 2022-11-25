@@ -101,6 +101,7 @@ import {
   Rating,
   Header,
   Navbar,
+  Portal,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
@@ -2040,6 +2041,9 @@ export default () => (
           </Paper>
         </Variant>
       </Component>
+      <Component name="Portal">
+        <Variant proto={PortalProto} />
+      </Component>
       <Component
         name="ScrollArea"
         docURL="https://mantine.dev/core/scroll-area/"
@@ -2475,5 +2479,23 @@ function DrawerProto() {
       </Drawer>
       <Button onClick={() => setOpened(true)}>Open Drawer</Button>
     </>
+  );
+}
+
+function PortalProto() {
+  const [opened, setOpened] = useState(false);
+
+  return (
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        {opened && (
+            <Portal>
+              <div>Your modal content</div>
+            </Portal>
+        )}
+
+        <button onClick={() => setOpened(true)} type="button">
+          Open modal
+        </button>
+      </div>
   );
 }
