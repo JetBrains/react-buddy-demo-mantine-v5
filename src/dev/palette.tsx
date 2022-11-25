@@ -111,12 +111,25 @@ export default () => (
       <Component name="AppShell" docURL="https://mantine.dev/core/app-shell/">
         <Variant>
           <AppShell
-              padding="md"
-              navbar={<Navbar width={{ base: 300 }} height={500} p="xs">Navbar content</Navbar>}
-              header={<Header height={60} p="xs">Header content</Header>}
-              styles={(theme) => ({
-                main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
-              })}
+            padding="md"
+            navbar={
+              <Navbar width={{ base: 300 }} height={500} p="xs">
+                Navbar content
+              </Navbar>
+            }
+            header={
+              <Header height={60} p="xs">
+                Header content
+              </Header>
+            }
+            styles={(theme) => ({
+              main: {
+                backgroundColor:
+                  theme.colorScheme === "dark"
+                    ? theme.colors.dark[8]
+                    : theme.colors.gray[0],
+              },
+            })}
           >
             Your application here
           </AppShell>
@@ -277,8 +290,12 @@ export default () => (
             <div>3</div>
           </Stack>
         </Variant>
-        <Variant name="centred" previewLayout="stretch" style={{height: '100%'}}>
-          <Stack align="center" justify="center" style={{height: '100%'}}>
+        <Variant
+          name="centred"
+          previewLayout="stretch"
+          style={{ height: "100%" }}
+        >
+          <Stack align="center" justify="center" style={{ height: "100%" }}>
             <div>1</div>
             <div>2</div>
             <div>3</div>
@@ -431,7 +448,9 @@ export default () => (
           <Autocomplete
             label="Your label"
             // Your custom item component with data properties
-            itemComponent={({ value, label, ...otherProps }) => <div {...otherProps}>{label}</div>}
+            itemComponent={({ value, label, ...otherProps }) => (
+              <div {...otherProps}>{label}</div>
+            )}
             data={[
               {
                 value: "value1",
@@ -905,7 +924,11 @@ export default () => (
             ]}
           />
         </Variant>
-        <Variant name="labelAlwaysOn" previewLayout="stretch" style={{paddingTop: 35, paddingLeft: 10, paddingRight: 10,}}>
+        <Variant
+          name="labelAlwaysOn"
+          previewLayout="stretch"
+          style={{ paddingTop: 35, paddingLeft: 10, paddingRight: 10 }}
+        >
           <RangeSlider
             labelAlwaysOn
             marks={[
@@ -1067,11 +1090,15 @@ export default () => (
             ]}
           />
         </Variant>
-        <Variant name="labelAlwaysOn" previewLayout="stretch" style={{
-          paddingTop: 35,
-          paddingLeft: 10,
-          paddingRight: 10,
-        }}>
+        <Variant
+          name="labelAlwaysOn"
+          previewLayout="stretch"
+          style={{
+            paddingTop: 35,
+            paddingLeft: 10,
+            paddingRight: 10,
+          }}
+        >
           <Slider
             labelAlwaysOn
             marks={[
@@ -2486,16 +2513,16 @@ function PortalProto() {
   const [opened, setOpened] = useState(false);
 
   return (
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        {opened && (
-            <Portal>
-              <div>Your modal content</div>
-            </Portal>
-        )}
+    <div style={{ position: "relative", zIndex: 1 }}>
+      {opened && (
+        <Portal>
+          <div>Your modal content</div>
+        </Portal>
+      )}
 
-        <button onClick={() => setOpened(true)} type="button">
-          Open modal
-        </button>
-      </div>
+      <button onClick={() => setOpened(true)} type="button">
+        Open modal
+      </button>
+    </div>
   );
 }
